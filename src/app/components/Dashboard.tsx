@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { FolderPlus, Layout, Plus, RotateCcw, Search } from "lucide-react";
 import { useNavigate } from "react-router";
 import { ProjectCard } from "./ProjectCard";
@@ -34,9 +34,11 @@ export function Dashboard() {
     toggleTaskCompletion,
     deleteTask,
     resetDemoData,
+    reorderProjects,
   } = useApp();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [draggedId, setDraggedId] = useState<string | null>(null);
   const [isAddingProject, setIsAddingProject] = useState(false);
   const [newProjectTitle, setNewProjectTitle] = useState("");
   const [isQuickCaptureOpen, setIsQuickCaptureOpen] = useState(false);
@@ -119,6 +121,21 @@ export function Dashboard() {
     setQuickCaptureTitle("");
     setQuickCaptureProjectId(null);
     setIsQuickCaptureOpen(false);
+  };
+
+  const handleDragStart = (_e: React.DragEvent, id: string) => {
+    setDraggedId(id);
+  };
+
+  const handleDragOver = (e: React.DragEvent, _id: string) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (_e: React.DragEvent, targetId: string) => {
+    if (draggedId && draggedId !== targetId) {
+      reorderProjects(draggedId, targetId);
+    }
+    setDraggedId(null);
   };
 
   const handleAddProject = () => {
@@ -298,6 +315,10 @@ export function Dashboard() {
                   project={project}
                   tasks={tasks}
                   onUpdateProject={updateProject}
+                  draggable={normalizedQuery === ""}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
                 />
               ))
             ) : (

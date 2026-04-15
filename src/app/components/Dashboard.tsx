@@ -127,7 +127,7 @@ export function Dashboard() {
     setDraggedId(id);
   };
 
-  const handleDragOver = (e: React.DragEvent, _id: string) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
 

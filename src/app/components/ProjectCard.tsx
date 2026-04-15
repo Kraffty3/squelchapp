@@ -9,9 +9,9 @@ interface ProjectCardProps {
   onUpdateProject?: (id: string, updates: Partial<Project>) => void;
   draggable?: boolean;
   onDragStart?: (e: React.DragEvent<HTMLElement>, id: string) => void;
-  onDragOver?: (e: React.DragEvent<HTMLElement>, id: string) => void;
+  onDragOver?: (e: React.DragEvent<HTMLElement>) => void;
   onDrop?: (e: React.DragEvent<HTMLElement>, id: string) => void;
-  onDragEnd?: (e: React.DragEvent<HTMLElement>, id: string) => void;
+  onDragEnd?: (e: React.DragEvent<HTMLElement>) => void;
 }
 
 export function ProjectCard({
@@ -56,11 +56,9 @@ export function ProjectCard({
 
   return (
     <article
-      draggable={draggable}
-      onDragStart={draggable ? (e) => onDragStart?.(e, project.id) : undefined}
-      onDragOver={draggable ? (e) => onDragOver?.(e, project.id) : undefined}
+      onDragOver={draggable ? (e) => onDragOver?.(e) : undefined}
       onDrop={draggable ? (e) => onDrop?.(e, project.id) : undefined}
-      onDragEnd={draggable ? (e) => onDragEnd?.(e, project.id) : undefined}
+      onDragEnd={draggable ? (e) => onDragEnd?.(e) : undefined}
       onClick={() => !isEditing && navigate(`/project/${project.id}`)}
       className="retro-panel group cursor-pointer overflow-hidden rounded-[26px] p-5 transition duration-150 hover:-translate-y-1 hover:shadow-lg"
       style={{
@@ -72,6 +70,8 @@ export function ProjectCard({
       <div className="mb-5 flex items-start justify-between gap-4">
         {draggable && (
           <div
+            draggable
+            onDragStart={(e) => { e.stopPropagation(); onDragStart?.(e, project.id); }}
             className={`mt-1 cursor-grab active:cursor-grabbing ${isDark ? "text-[#ddd4ff]" : "text-[#6e6597]"}`}
             onClick={(e) => e.stopPropagation()}
           >

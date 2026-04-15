@@ -138,6 +138,10 @@ export function Dashboard() {
     setDraggedId(null);
   };
 
+  const handleDragEnd = (_e: React.DragEvent) => {
+    setDraggedId(null);
+  };
+
   const handleAddProject = () => {
     const title = newProjectTitle.trim();
 
@@ -319,6 +323,7 @@ export function Dashboard() {
                   onDragStart={handleDragStart}
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
+                  onDragEnd={handleDragEnd}
                 />
               ))
             ) : (

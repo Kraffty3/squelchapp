@@ -11,6 +11,7 @@ interface ProjectCardProps {
   onDragStart?: (e: React.DragEvent<HTMLElement>, id: string) => void;
   onDragOver?: (e: React.DragEvent<HTMLElement>, id: string) => void;
   onDrop?: (e: React.DragEvent<HTMLElement>, id: string) => void;
+  onDragEnd?: (e: React.DragEvent<HTMLElement>, id: string) => void;
 }
 
 export function ProjectCard({
@@ -21,6 +22,7 @@ export function ProjectCard({
   onDragStart,
   onDragOver,
   onDrop,
+  onDragEnd,
 }: ProjectCardProps) {
   const navigate = useNavigate();
   const { theme } = useApp();
@@ -58,6 +60,7 @@ export function ProjectCard({
       onDragStart={draggable ? (e) => onDragStart?.(e, project.id) : undefined}
       onDragOver={draggable ? (e) => onDragOver?.(e, project.id) : undefined}
       onDrop={draggable ? (e) => onDrop?.(e, project.id) : undefined}
+      onDragEnd={draggable ? (e) => onDragEnd?.(e, project.id) : undefined}
       onClick={() => !isEditing && navigate(`/project/${project.id}`)}
       className="retro-panel group cursor-pointer overflow-hidden rounded-[26px] p-5 transition duration-150 hover:-translate-y-1 hover:shadow-lg"
       style={{
